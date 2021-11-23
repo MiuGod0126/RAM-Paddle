@@ -1,0 +1,4 @@
+tensorboard_logger
+paddlepaddle
+matplotlib
+ipdb
