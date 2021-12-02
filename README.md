@@ -10,17 +10,16 @@
 
 本文将注意力问题建模为目标导向的agent与视觉环境交互的序列决策过程，agent的核心是一个循环神经网络，它在每一时间步处理来自sensor收集的子图信息，并随着时间推移集成图像信息，并选择如何行动和部署下一个时间步的sensor。
 
-![RAM](https://github.com/MiuGod0126/RAM-Paddle/raw/master/plots/model.png)
+![RAM](./plots/model.png)
 
 RAM模型结构如上图所示，其中包含如下五个部分：
 
 - **glimpse sensor**:glimpse sensor受到视网膜注意力机制的启发，即人往往能清晰的看见所关注对象的细节（内容少，高分辨率），同时保留对背景的模糊感受（内容多，低分辨率）。于是设计的glimpse sensor能从图像 `x`中提取漏斗状的一瞥（glimpse）`phi`，sensor首先编码靠近位置`l`的一块高像素的小区域，然后再渐进的从l附近取更大且像素更低的子区域（所有的截取的子区域需要缩放到同一大小，所以大图像素低），从而得到原始图像 `x`的压缩表示；
   - 下面第一张图是截取位置l附近不同尺度的区域，然后第二章是将他们缩放到同一尺度，使得细节部分有高分辨率，背景低分辨率。
+ 
+  - ![bbox](./plots/bbox.png)
   
-  - ![bbox](https://github.com/MiuGod0126/RAM-Paddle/raw/master/plots/bbox.png)
-  
-  - ![glimpse](https://github.com/MiuGod0126/RAM-Paddle/raw/master/plots/glimpses.png)
-
+  - ![glimpse](./plots/glimpses.png)
 
 - **glimpse network**: 该网络将sensor得到的压缩表示"what" (`phi`)和位置信息"where" (`l`)结合起来，得到这一瞥的特征向量`g_t`；
 - **core network**: 核心网络是个循环神经网络，该网络维持一个内部状态 `h_t` ，代表从过去观测历史中提取的整合信息。它通过状态向量 `h_t` 编码angent对环境的知识，并且在每个时间步 `t`都会更新。时间步t时的输入为上一个时刻glimpse向量`g_(t-1)`和状态向量`h_(t-1)；`
