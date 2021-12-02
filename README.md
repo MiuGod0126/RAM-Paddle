@@ -4,7 +4,7 @@
 
  *Recurrent Attention Model* (RAM)，它能顺序处理输入信息，在每个时间步关注图像内不同的子区域，然后增量式的结合来自这些固定位置的信息，并建立图像的动态内部表示。RAM的优点在于能自主选择图像的子区域进行处理，而不像传统的卷积模型一样复杂度随着输入图像像素变大而线性增长。
 
-![example](https://github.com/MiuGod0126/RAM-Paddle/raw/master/plots/example.gif)
+![example](./plots/example.gif)
 
 ## 2 网络结构
 
